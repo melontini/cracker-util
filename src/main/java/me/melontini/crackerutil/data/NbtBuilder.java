@@ -4,6 +4,8 @@ import me.melontini.crackerutil.util.MakeSure;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.util.Pair;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -35,9 +37,9 @@ import java.util.UUID;
  * </pre>
  */
 public class NbtBuilder {
-    private NbtCompound nbt;
+    private final NbtCompound nbt;
 
-    private NbtBuilder(NbtCompound nbt) {
+    private NbtBuilder( NbtCompound nbt) {
         this.nbt = nbt;
     }
 
@@ -45,11 +47,13 @@ public class NbtBuilder {
         this.nbt = new NbtCompound();
     }
 
-    public static NbtBuilder create() {
+    @Contract(value = " -> new", pure = true)
+    public static @NotNull NbtBuilder create() {
         return new NbtBuilder();
     }
 
-    public static NbtBuilder create(NbtCompound nbt) {
+    @Contract("_ -> new")
+    public static @NotNull NbtBuilder create(@Nullable NbtCompound nbt) {
         MakeSure.notNull(nbt, "Null NBT provided");
         return new NbtBuilder(nbt);
     }

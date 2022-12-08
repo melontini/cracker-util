@@ -35,7 +35,8 @@ public class EnumUtils {
      * @return the newly created enum element
      * @throws RuntimeException if an error occurs during the extension process.
      */
-    public static <T extends Enum<?>> T extendByReflecting(Class<T> enumClass, String internalName, Object... params) {
+    /*probably a good idea to make this synchronized*/
+    public synchronized static <T extends Enum<?>> T extendByReflecting(Class<T> enumClass, String internalName, Object... params) {
         try {
             Class<?> enumArrayClass = enumClass.arrayType();
 
@@ -86,7 +87,7 @@ public class EnumUtils {
      *
      * @param clazz the class of the enum for which to clear the cache
      */
-    public static void clearEnumCache(Class<? extends Enum<?>> clazz) {
+    public static synchronized void clearEnumCache(Class<? extends Enum<?>> clazz) {
         try {
             writeField(Class.class.getDeclaredField("enumConstants"), clazz, null);
         } catch (Exception e) {

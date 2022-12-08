@@ -26,6 +26,4 @@ public class TextColorMixin {
     private static Map<String, TextColor> BY_NAME = FORMATTING_TO_COLOR.values()
             .stream()
             .collect(Collectors.toMap(textColor -> textColor.name, Function.identity()));
-
-    //ImmutableMap.toImmutableMap(textColor -> textColor.name, Function.identity())
 }

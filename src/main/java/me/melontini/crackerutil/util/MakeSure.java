@@ -1,5 +1,9 @@
 package me.melontini.crackerutil.util;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collection;
 
 /**
@@ -14,7 +18,7 @@ public class MakeSure {
      * @return the given object if it is not null
      * @throws NullPointerException if the given object is null
      */
-    public static <T> T notNull(T thing) {
+    public static <T> T notNull(@Nullable T thing) {
         if (thing == null) throw new NullPointerException();
         return thing;
     }
@@ -29,7 +33,7 @@ public class MakeSure {
      * @return the given object if it is not null
      * @throws NullPointerException if the given object is null
      */
-    public static <T> T notNull(T thing, String msg) {
+    public static <T> T notNull(@Nullable T thing, String msg) {
         if (thing == null) throw new NullPointerException(msg);
         return thing;
     }
@@ -41,7 +45,8 @@ public class MakeSure {
      * @param things the objects to check for null
      * @throws NullPointerException if any of the given objects are null
      */
-    public static void notNulls(Object... things) {
+    @Contract(pure = true)
+    public static void notNulls(@Nullable Object... things) {
         for (Object thing : things) {
             if (thing == null) throw new NullPointerException();
         }
@@ -55,7 +60,8 @@ public class MakeSure {
      * @param things the objects to check for null
      * @throws NullPointerException if any of the given objects are null
      */
-    public static void notNulls(String msg, Object... things) {
+    @Contract(pure = true)
+    public static void notNulls(String msg, @Nullable Object... things) {
         for (Object thing : things) {
             if (thing == null) throw new NullPointerException(msg);
         }
@@ -112,7 +118,8 @@ public class MakeSure {
      * @return the given array if it is not null or empty
      * @throws IllegalArgumentException if the given array is null or empty
      */
-    public static <T> T[] notEmpty(T[] array) {
+    @Contract(value = "null -> fail", pure = true)
+    public static <T> T @NotNull [] notEmpty(@Nullable T[] array) {
         if (array == null || array.length == 0) throw new IllegalArgumentException();
         return array;
     }
@@ -127,7 +134,8 @@ public class MakeSure {
      * @return the given array if it is not null or empty
      * @throws IllegalArgumentException if the given array is null or empty
      */
-    public static <T> T[] notEmpty(T[] array, String msg) {
+    @Contract(value = "null, _ -> fail", pure = true)
+    public static <T> T @NotNull [] notEmpty(@Nullable T[] array, String msg) {
         if (array == null || array.length == 0) throw new IllegalArgumentException(msg);
         return array;
     }
@@ -140,7 +148,8 @@ public class MakeSure {
      * @return the given collection if it is not null or empty
      * @throws IllegalArgumentException if the given collection is null or empty
      */
-    public static <T extends Collection<?>> T notEmpty(T collection) {
+    @Contract("null -> fail")
+    public static <T extends Collection<?>> @NotNull T notEmpty(@Nullable T collection) {
         if (collection == null || collection.isEmpty()) throw new IllegalArgumentException();
         return collection;
     }
@@ -154,7 +163,8 @@ public class MakeSure {
      * @return the given collection if it is not null or empty
      * @throws IllegalArgumentException if the given collection is null or empty
      */
-    public static <T extends Collection<?>> T notEmpty(T collection, String msg) {
+    @Contract("null, _ -> fail")
+    public static <T extends Collection<?>> @NotNull T notEmpty(@Nullable T collection, String msg) {
         if (collection == null || collection.isEmpty()) throw new IllegalArgumentException(msg);
         return collection;
     }
@@ -166,7 +176,8 @@ public class MakeSure {
      * @return the given string if it is not null or empty
      * @throws IllegalArgumentException if the given string is null or empty
      */
-    public static String notEmpty(String string) {
+    @Contract("null -> fail")
+    public static @NotNull String notEmpty(@Nullable String string) {
         if (string == null || string.isEmpty()) throw new IllegalArgumentException();
         return string;
     }
@@ -181,7 +192,8 @@ public class MakeSure {
      * @return the given string if it is not null or empty
      * @throws IllegalArgumentException if the given string is null or empty
      */
-    public static String notEmpty(String string, String msg) {
+    @Contract("null, _ -> fail")
+    public static @NotNull String notEmpty(@Nullable String string, String msg) {
         if (string == null || string.isEmpty()) throw new IllegalArgumentException(msg);
         return string;
     }

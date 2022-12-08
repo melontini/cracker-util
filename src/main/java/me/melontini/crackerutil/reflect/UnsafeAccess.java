@@ -21,8 +21,7 @@ public class UnsafeAccess {
                 Constructor<Unsafe> constructor = Unsafe.class.getDeclaredConstructor();
                 constructor.setAccessible(true);
                 return constructor.newInstance();
-            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
-                     IllegalAccessException ex) {
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
                 throw new RuntimeException("Couldn't access Unsafe", ex);
             }
         }

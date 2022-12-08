@@ -26,6 +26,11 @@ public class CrackerLog {
         LOGGER.error(name + msg);
     }
 
+    public static void error(Throwable throwable) {
+        String name = "[" + getCallerName() + "] ";
+        LOGGER.error(name, throwable);
+    }
+
     public static void warn(String msg, Throwable throwable) {
         String name = "[" + getCallerName() + "] ";
         LOGGER.warn(name + msg, throwable);

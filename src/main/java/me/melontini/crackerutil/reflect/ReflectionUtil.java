@@ -2,6 +2,7 @@ package me.melontini.crackerutil.reflect;
 
 import me.melontini.crackerutil.util.MakeSure;
 import org.apache.commons.lang3.ClassUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import sun.misc.Unsafe;
 
@@ -39,7 +40,7 @@ public class ReflectionUtil {
      * @param args  the list of arguments that the constructor must be able to accept
      * @return a constructor for the given class that matches the given list of arguments, or null if no such constructor is found
      */
-    public static @Nullable <T> Constructor<T> findConstructor(Class<T> clazz, List<Object> args) {
+    public static @Nullable <T> Constructor<T> findConstructor(@NotNull Class<T> clazz, List<Object> args) {
         Constructor<T> c = null;
         if (clazz.getDeclaredConstructors().length == 1) {
             c = (Constructor<T>) clazz.getDeclaredConstructors()[0];// we can skip loops if there's only 1 constructor in a class.
@@ -157,7 +158,7 @@ public class ReflectionUtil {
      * @return a mock {@link MethodHandles.Lookup} for the given class
      * @throws RuntimeException if an error occurs while creating the mock lookup class
      */
-    public static MethodHandles.Lookup mockLookupClass(Class<?> clazz) {
+    public static @NotNull MethodHandles.Lookup mockLookupClass(Class<?> clazz) {
         try {
             if (handlesMockConstructor == null) {
                 Constructor<?> ctx = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class);
