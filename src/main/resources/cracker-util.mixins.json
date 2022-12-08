@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "me.melontini.crackerutil.mixin.Plugin",
   "mixins": [
-    "CrackerLogASM",
     "enhanced_enums.AbstractMinecraftEntityTypeMixin",
     "enhanced_enums.BoatEntityTypeMixin",
     "enhanced_enums.FormattingMixin",
