@@ -1,0 +1,24 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.melontini.crackerutil.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "plugin": "me.melontini.crackerutil.mixin.Plugin",
+  "mixins": [
+    "CrackerLogASM",
+    "enhanced_enums.AbstractMinecraftEntityTypeMixin",
+    "enhanced_enums.BoatEntityTypeMixin",
+    "enhanced_enums.FormattingMixin",
+    "enhanced_enums.RarityMixin",
+    "enhanced_enums.RecipeBookCategoryMixin",
+    "kill_immutables.TextColorMixin"
+  ],
+  "client": [
+    "animated_groups.CreativeInventoryScreenMixin",
+    "enhanced_enums.RecipeBookGroupMixin",
+    "kill_immutables.RecipeBookGroupMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
