@@ -2,6 +2,7 @@ package me.melontini.crackerutil.content;
 
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
+import org.jetbrains.annotations.NotNull;
 
 public class TextColorUtil {
     /**
@@ -16,7 +17,7 @@ public class TextColorUtil {
      * @param formatting the {@link Formatting} element to add a color to
      * @return the newly created {@link TextColor} instance
      */
-    public static TextColor addTextColor(Formatting formatting) {
+    public static @NotNull TextColor addTextColor(@NotNull Formatting formatting) {
         var tc = new TextColor(formatting.getColorValue(), formatting.getName());
         TextColor.FORMATTING_TO_COLOR.put(formatting, tc);
         TextColor.BY_NAME.put(tc.name, tc);

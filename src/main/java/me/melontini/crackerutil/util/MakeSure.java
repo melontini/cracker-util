@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.function.Supplier;
 
 /**
  * A utility class for ensuring that certain conditions are true, throwing an exception if not.
@@ -18,9 +19,26 @@ public class MakeSure {
      * @return the given object if it is not null
      * @throws NullPointerException if the given object is null
      */
-    public static <T> T notNull(@Nullable T thing) {
+    @Contract(value = "null -> fail; !null -> param1", pure = true)
+    public static <T> @NotNull T notNull(@Nullable T thing) {
         if (thing == null) throw new NullPointerException();
         return thing;
+    }
+
+    /**
+     * Ensures that the given object is not null. If it is null, it returns the value
+     * provided by the specified {@link Supplier}.
+     *
+     * @param thing the object to check for null
+     * @param supplier a {@link Supplier} that provides the value to be returned if the given object is null
+     * @param <T> the type of the object
+     * @return the given object if it is not null, or the value provided by the specified {@link Supplier} if it is null
+     * @throws NullPointerException if the given object is null and the specified {@link Supplier} is null
+     */
+    public static <T> @NotNull T notNull(@Nullable T thing, Supplier<T> supplier) {
+        T ret = thing == null ? supplier.get() : thing;
+        if (ret == null) throw new NullPointerException();
+        return ret;
     }
 
     /**
@@ -33,7 +51,8 @@ public class MakeSure {
      * @return the given object if it is not null
      * @throws NullPointerException if the given object is null
      */
-    public static <T> T notNull(@Nullable T thing, String msg) {
+    @Contract(value = "null, _ -> fail; !null, _ -> param1", pure = true)
+    public static <T> @NotNull T notNull(@Nullable T thing, String msg) {
         if (thing == null) throw new NullPointerException(msg);
         return thing;
     }
@@ -43,13 +62,15 @@ public class MakeSure {
      * of them are.
      *
      * @param things the objects to check for null
+     * @return the given objects if they're not null
      * @throws NullPointerException if any of the given objects are null
      */
-    @Contract(pure = true)
-    public static void notNulls(@Nullable Object... things) {
+    @Contract(value = "null -> fail", pure = true)
+    public static Object[] notNulls(@Nullable Object... things) {
         for (Object thing : things) {
             if (thing == null) throw new NullPointerException();
         }
+        return things;
     }
 
     /**
@@ -58,13 +79,15 @@ public class MakeSure {
      *
      * @param msg    the message to use in the {@link NullPointerException} if any of the objects are null
      * @param things the objects to check for null
+     * @return the given objects if they're not null
      * @throws NullPointerException if any of the given objects are null
      */
-    @Contract(pure = true)
-    public static void notNulls(String msg, @Nullable Object... things) {
+    @Contract(value = "_, _ -> param2", pure = true)
+    public static @Nullable Object[] notNulls(String msg, @Nullable Object... things) {
         for (Object thing : things) {
             if (thing == null) throw new NullPointerException(msg);
         }
+        return things;
     }
 
     /**
@@ -73,8 +96,10 @@ public class MakeSure {
      * @param bool the boolean to check
      * @throws RuntimeException if the given boolean is not true
      */
-    public static void isTrue(boolean bool) {
+    @Contract(value = "false -> fail", pure = true)
+    public static boolean isTrue(boolean bool) {
         if (!bool) throw new RuntimeException();
+        return true;
     }
 
     /**
@@ -84,8 +109,10 @@ public class MakeSure {
      * @param msg  msg the message to use in the {@link RuntimeException} if the boolean is not true
      * @throws RuntimeException if the given boolean is not true
      */
-    public static void isTrue(boolean bool, String msg) {
+    @Contract(value = "false, _ -> fail", pure = true)
+    public static boolean isTrue(boolean bool, String msg) {
         if (!bool) throw new RuntimeException(msg);
+        return true;
     }
 
     /**
@@ -94,8 +121,10 @@ public class MakeSure {
      * @param bool the boolean to check
      * @throws RuntimeException if the given boolean is not false
      */
-    public static void isFalse(boolean bool) {
+    @Contract(value = "true -> fail", pure = true)
+    public static boolean isFalse(boolean bool) {
         if (bool) throw new RuntimeException();
+        return false;
     }
 
     /**
@@ -106,8 +135,10 @@ public class MakeSure {
      * @param msg  the message to use in the {@link RuntimeException} if the boolean is not false
      * @throws RuntimeException if the given boolean is not false
      */
-    public static void isFalse(boolean bool, String msg) {
+    @Contract(value = "true, _ -> fail", pure = true)
+    public static boolean isFalse(boolean bool, String msg) {
         if (bool) throw new RuntimeException(msg);
+        return false;
     }
 
     /**

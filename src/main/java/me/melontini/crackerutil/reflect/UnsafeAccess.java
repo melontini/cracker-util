@@ -1,17 +1,17 @@
 package me.melontini.crackerutil.reflect;
 
 import me.melontini.crackerutil.util.MakeSure;
+import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 import sun.misc.Unsafe;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.*;
-import java.util.function.Supplier;
 
 import static me.melontini.crackerutil.reflect.ReflectionUtil.getOverrideOffset;
 
 public class UnsafeAccess {
-    private static final Unsafe UNSAFE = ((Supplier<Unsafe>) () -> {
+    private static final Unsafe UNSAFE = Util.make(() -> {
         try {
             Field unsafe = Unsafe.class.getDeclaredField("theUnsafe");
             unsafe.setAccessible(true);
@@ -21,12 +21,14 @@ public class UnsafeAccess {
                 Constructor<Unsafe> constructor = Unsafe.class.getDeclaredConstructor();
                 constructor.setAccessible(true);
                 return constructor.newInstance();
-            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ex) {
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                     IllegalAccessException ex) {
                 throw new RuntimeException("Couldn't access Unsafe", ex);
             }
         }
-    }).get();
+    });
     private static Object internalUnsafe;
+    private static Method objectFieldOffset;
 
     /**
      * You can use this method to write private final fields.
@@ -86,7 +88,6 @@ public class UnsafeAccess {
         return internalUnsafe;
     }
 
-    private static Method objectFieldOffset;
     /**
      * Gets the offset of the given field in the given class.
      *

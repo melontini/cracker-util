@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author <a href="https://stackoverflow.com/questions/55918972/unable-to-find-method-sun-misc-unsafe-defineclass">source</a>
@@ -45,10 +46,7 @@ public class ReflectionUtil {
         if (clazz.getDeclaredConstructors().length == 1) {
             c = (Constructor<T>) clazz.getDeclaredConstructors()[0];// we can skip loops if there's only 1 constructor in a class.
         } else {
-            Class<?>[] classes = new Class[args.size()];
-            for (int i = 0; i < args.size(); i++) {
-                classes[i] = args.get(i).getClass();
-            }
+            Class<?>[] classes = args.stream().map(Object::getClass).toArray(Class[]::new);
 
             try {
                 c = clazz.getDeclaredConstructor(classes);
@@ -57,7 +55,7 @@ public class ReflectionUtil {
                     for (Constructor<?> declaredConstructor : clazz.getDeclaredConstructors()) {
                         if (declaredConstructor.getParameterCount() == args.size()) {
                             boolean bool = true;
-                            var pt = declaredConstructor.getParameterTypes();
+                            Class<?>[] pt = declaredConstructor.getParameterTypes();
                             for (int i = 0; i < declaredConstructor.getParameterCount(); i++) {
                                 if (!ClassUtils.isAssignable(classes[i], pt[i])) {
                                     bool = false;
@@ -78,15 +76,14 @@ public class ReflectionUtil {
     }
 
     /**
-     * Attempts to set a method as accessible.
+     * Attempts to set a constructor as accessible.
      *
      * <p>
      * This method uses the vanilla `Constructor.setAccessible(true)` method, but falls back to using `Unsafe.putBoolean(i, true)` in case reflection fails.
      * </p>
      *
-     * @param constructor the method to set as accessible
+     * @param constructor the constructor to set as accessible
      */
-    //the gateway to hell
     public static void setAccessible(Constructor<?> constructor) {
         try {
             constructor.setAccessible(true);
@@ -115,13 +112,13 @@ public class ReflectionUtil {
     }
 
     /**
-     * Attempts to set a method as accessible.
+     * Attempts to set a field as accessible.
      *
      * <p>
      * This method uses the vanilla `Field.setAccessible(true)` method, but falls back to using `Unsafe.putBoolean(i, true)` in case reflection fails.
      * </p>
      *
-     * @param field the method to set as accessible
+     * @param field the field to set as accessible
      */
     public static void setAccessible(Field field) {
         try {
@@ -141,7 +138,7 @@ public class ReflectionUtil {
                 f1.setAccessible(false);
                 Unsafe unsafe = (Unsafe) f.get(null);
                 int i;//override boolean byte offset. should result in 12 for java 17
-                for (i = 0; unsafe.getBoolean(f, i) == unsafe.getBoolean(f1, i); i++) ;
+                for (i = 0; unsafe.getBoolean(f, i) == unsafe.getBoolean(f1, i); i++);
                 offset = i;
             } catch (Exception ignored) {
                 offset = 12; //fallback to 12 just in case

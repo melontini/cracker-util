@@ -36,7 +36,7 @@ public class EnumUtils {
      * @throws RuntimeException if an error occurs during the extension process.
      */
     /*probably a good idea to make this synchronized*/
-    public synchronized static <T extends Enum<?>> T extendByReflecting(Class<T> enumClass, String internalName, Object... params) {
+    public static synchronized <T extends Enum<?>> T extendByReflecting(Class<T> enumClass, String internalName, Object... params) {
         try {
             Class<?> enumArrayClass = enumClass.arrayType();
 

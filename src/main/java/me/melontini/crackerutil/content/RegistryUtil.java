@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -21,6 +22,7 @@ public class RegistryUtil {
         return createItem(true, itemClass, id, params);
     }
 
+    @Contract("false, _, _, _ -> null")
     public static @Nullable Item createItem(boolean shouldRegister, Class<?> itemClass, Identifier id, Object... params) {
         if (shouldRegister) {
             List<Class<?>> list = new ArrayList<>();
@@ -45,6 +47,7 @@ public class RegistryUtil {
         return createEntityType(true, id, builder);
     }
 
+    @Contract("false, _, _ -> null")
     public static @Nullable <T extends Entity> EntityType<T> createEntityType(boolean shouldRegister, Identifier id, EntityType.Builder<T> builder) {
         if (shouldRegister) {
             EntityType<T> type = builder.build(Pattern.compile("[\\W]").matcher(id.toString()).replaceAll("_"));
@@ -58,6 +61,7 @@ public class RegistryUtil {
         return createBlock(true, blockClass, id, params);
     }
 
+    @Contract("false, _, _, _ -> null")
     public static @Nullable Block createBlock(boolean shouldRegister, Class<?> blockClass, Identifier id, Object... params) {
         if (shouldRegister) {
             List<Class<?>> list = new ArrayList<>();
@@ -81,6 +85,7 @@ public class RegistryUtil {
         return createBlockEntity(true, id, builder);
     }
 
+    @Contract("false, _, _ -> null")
     public static @Nullable <T extends BlockEntity> BlockEntityType<T> createBlockEntity(boolean shouldRegister, Identifier id, BlockEntityType.Builder<T> builder) {
         if (shouldRegister) {
             BlockEntityType<T> type = builder.build(null);
