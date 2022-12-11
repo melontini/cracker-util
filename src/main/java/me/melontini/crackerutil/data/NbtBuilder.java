@@ -40,6 +40,7 @@ public class NbtBuilder {
     private final NbtCompound nbt;
 
     private NbtBuilder( NbtCompound nbt) {
+        if (nbt == null) nbt = new NbtCompound();
         this.nbt = nbt;
     }
 
@@ -54,7 +55,6 @@ public class NbtBuilder {
 
     @Contract("_ -> new")
     public static @NotNull NbtBuilder create(@Nullable NbtCompound nbt) {
-        MakeSure.notNull(nbt, "Null NBT provided");
         return new NbtBuilder(nbt);
     }
 
