@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 /**
  * A utility class for ensuring that certain conditions are true, throwing an exception if not.
  */
+@SuppressWarnings("UnusedReturnValue")
 public class MakeSure {
     /**
      * Ensures that the given object is not null, throwing a {@link NullPointerException} if it is.
@@ -62,15 +63,13 @@ public class MakeSure {
      * of them are.
      *
      * @param things the objects to check for null
-     * @return the given objects if they're not null
      * @throws NullPointerException if any of the given objects are null
      */
     @Contract(value = "null -> fail", pure = true)
-    public static Object[] notNulls(@Nullable Object... things) {
+    public static void notNulls(@Nullable Object... things) {
         for (Object thing : things) {
             if (thing == null) throw new NullPointerException();
         }
-        return things;
     }
 
     /**
@@ -79,66 +78,60 @@ public class MakeSure {
      *
      * @param msg    the message to use in the {@link NullPointerException} if any of the objects are null
      * @param things the objects to check for null
-     * @return the given objects if they're not null
      * @throws NullPointerException if any of the given objects are null
      */
-    @Contract(value = "_, _ -> param2", pure = true)
-    public static @Nullable Object[] notNulls(String msg, @Nullable Object... things) {
+    @Contract(value = "_, null -> fail", pure = true)
+    public static void notNulls(String msg, @Nullable Object... things) {
         for (Object thing : things) {
             if (thing == null) throw new NullPointerException(msg);
         }
-        return things;
     }
 
     /**
-     * Ensures that the given boolean is true, throwing a {@link RuntimeException} if it is not.
+     * Ensures that the given boolean is true, throwing a {@link IllegalArgumentException} if it is not.
      *
      * @param bool the boolean to check
-     * @throws RuntimeException if the given boolean is not true
+     * @throws IllegalArgumentException if the given boolean is not true
      */
     @Contract(value = "false -> fail", pure = true)
-    public static boolean isTrue(boolean bool) {
-        if (!bool) throw new RuntimeException();
-        return true;
+    public static void isTrue(boolean bool) {
+        if (!bool) throw new IllegalArgumentException();
     }
 
     /**
-     * Ensures that the given boolean is true, throwing a {@link RuntimeException} if it is not.
+     * Ensures that the given boolean is true, throwing a {@link IllegalArgumentException} if it is not.
      *
      * @param bool the boolean to check
-     * @param msg  msg the message to use in the {@link RuntimeException} if the boolean is not true
-     * @throws RuntimeException if the given boolean is not true
+     * @param msg  msg the message to use in the {@link IllegalArgumentException} if the boolean is not true
+     * @throws IllegalArgumentException if the given boolean is not true
      */
     @Contract(value = "false, _ -> fail", pure = true)
-    public static boolean isTrue(boolean bool, String msg) {
-        if (!bool) throw new RuntimeException(msg);
-        return true;
+    public static void isTrue(boolean bool, String msg) {
+        if (!bool) throw new IllegalArgumentException(msg);
     }
 
     /**
-     * Ensures that the given boolean is false, throwing a {@link RuntimeException} if it is not.
+     * Ensures that the given boolean is false, throwing a {@link IllegalArgumentException} if it is not.
      *
      * @param bool the boolean to check
-     * @throws RuntimeException if the given boolean is not false
+     * @throws IllegalArgumentException if the given boolean is not false
      */
     @Contract(value = "true -> fail", pure = true)
-    public static boolean isFalse(boolean bool) {
-        if (bool) throw new RuntimeException();
-        return false;
+    public static void isFalse(boolean bool) {
+        if (bool) throw new IllegalArgumentException();
     }
 
     /**
-     * Ensures that the given boolean is false, throwing a {@link RuntimeException} with the given message
+     * Ensures that the given boolean is false, throwing a {@link IllegalArgumentException} with the given message
      * if it is not.
      *
      * @param bool the boolean to check
-     * @param msg  the message to use in the {@link RuntimeException} if the boolean is not false
-     * @throws RuntimeException if the given boolean is not false
+     * @param msg  the message to use in the {@link IllegalArgumentException} if the boolean is not false
+     * @throws IllegalArgumentException if the given boolean is not false
      */
     @Contract(value = "true, _ -> fail", pure = true)
-    public static boolean isFalse(boolean bool, String msg) {
-        if (bool) throw new RuntimeException(msg);
-        return false;
+    public static void isFalse(boolean bool, String msg) {
+        if (bool) throw new IllegalArgumentException(msg);
     }
 
     /**
