@@ -70,7 +70,7 @@ public class CrackerLog {
     public static String getCallerName() {
         return stackWalker.walk(s -> {
             var first = s.skip(2).findFirst().orElse(null);
-            return first != null ? first.getClassName() : "NoClassNameFound";
+            return first != null ? first.getClassName() + "#" + first.getMethodName() : "NoClassNameFound";
         });
     }
 }
