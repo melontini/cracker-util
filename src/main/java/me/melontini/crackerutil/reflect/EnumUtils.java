@@ -25,7 +25,7 @@ public class EnumUtils {
      * This method allows adding new elements to an enum at runtime. It should only be used if absolutely necessary, as extending enums can cause unpredictable behavior and can break code that relies on a fixed set of enum values.
      * In particular, switch statements and maps or lists that use enums as keys or values may fail when new elements are added.
      * </p>
-     *
+     * <p>
      * This can also break in future java versions.
      *
      * @param enumClass    the class of the enum to extend

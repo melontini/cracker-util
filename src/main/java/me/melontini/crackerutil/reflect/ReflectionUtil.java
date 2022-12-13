@@ -13,7 +13,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author <a href="https://stackoverflow.com/questions/55918972/unable-to-find-method-sun-misc-unsafe-defineclass">source</a>
@@ -138,7 +137,7 @@ public class ReflectionUtil {
                 f1.setAccessible(false);
                 Unsafe unsafe = (Unsafe) f.get(null);
                 int i;//override boolean byte offset. should result in 12 for java 17
-                for (i = 0; unsafe.getBoolean(f, i) == unsafe.getBoolean(f1, i); i++);
+                for (i = 0; unsafe.getBoolean(f, i) == unsafe.getBoolean(f1, i); i++) ;
                 offset = i;
             } catch (Exception ignored) {
                 offset = 12; //fallback to 12 just in case

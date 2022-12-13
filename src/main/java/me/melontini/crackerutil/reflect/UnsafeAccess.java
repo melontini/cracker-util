@@ -8,8 +8,6 @@ import sun.misc.Unsafe;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.*;
 
-import static me.melontini.crackerutil.reflect.ReflectionUtil.getOverrideOffset;
-
 public class UnsafeAccess {
     private static final Unsafe UNSAFE = Util.make(() -> {
         try {
@@ -77,7 +75,7 @@ public class UnsafeAccess {
     public static @Nullable Object internalUnsafe() {
         if (internalUnsafe == null) {
             try {
-                int i = getOverrideOffset();
+                int i = ReflectionUtil.getOverrideOffset();
                 Field f2 = Unsafe.class.getDeclaredField("theInternalUnsafe");
                 UnsafeAccess.getUnsafe().putBoolean(f2, i, true);//write directly into override to bypass perms
                 internalUnsafe = f2.get(null);
