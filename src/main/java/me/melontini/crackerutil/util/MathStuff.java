@@ -13,9 +13,30 @@ package me.melontini.crackerutil.util;
  * @see Math
  */
 public class MathStuff {
+    public static long round(double value) {
+        long x = (long) value; //this works since casting to long just truncates doubles
+        if (value - x >= 0.5) {
+            return x + 1;
+        }
+        if (value - x < -0.5) {
+            return x - 1;
+        }
+        return x;
+    }
+
+    public static int round(float value) {
+        int x = (int) value; //this works since casting to long just truncates doubles
+        if (value - x >= 0.5) {
+            return x + 1;
+        }
+        if (value - x < -0.5) {
+            return x - 1;
+        }
+        return x;
+    }
 
     public static int fastCeil(double value) {
-        return (int)(value - 1024.0) + 1024;
+        return (int) (value - 1024.0) + 1024;
     }
 
     public static double fastSqrt(double x, int numIterations) {
@@ -25,6 +46,7 @@ public class MathStuff {
     public static float fastSqrt(float x, int numIterations) {
         return inverseSqrt(x, numIterations) * x;
     }
+
     public static double inverseSqrt(double x, int numIterations) {
         MakeSure.isFalse(x < 0, "Negative numbers cannot have a square root.");
 

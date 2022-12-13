@@ -1,6 +1,7 @@
 package me.melontini.crackerutil.client.util;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -10,6 +11,9 @@ import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.client.render.*;
+import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.OrderedText;
@@ -31,7 +35,10 @@ import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
 public class DrawUtil {
-    protected static void renderTooltip(MatrixStack matrices, ItemStack stack, float x, float y) {
+    private DrawUtil() {
+        throw new UnsupportedOperationException();
+    }
+    public static void renderTooltip(MatrixStack matrices, ItemStack stack, float x, float y) {
         renderTooltip(matrices, getTooltipFromItem(stack), stack.getTooltipData(), x, y);
     }
 
@@ -197,11 +204,11 @@ public class DrawUtil {
         drawTexture(matrices, x, y, width, height, u, v, width, height, textureWidth, textureHeight);
     }
 
-    private static void drawTexture(MatrixStack matrices, float x0, float x1, float y0, float y1, float z, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight) {
+    public static void drawTexture(MatrixStack matrices, float x0, float x1, float y0, float y1, float z, float regionWidth, float regionHeight, float u, float v, float textureWidth, float textureHeight) {
         drawTexturedQuad(matrices.peek().getPositionMatrix(), x0, x1, y0, y1, z, (u + 0.0F) / textureWidth, (u + regionWidth) / textureWidth, (v + 0.0F) / textureHeight, (v + regionHeight) / textureHeight);
     }
 
-    private static void drawTexturedQuad(Matrix4f matrix, float x0, float x1, float y0, float y1, float z, float u0, float u1, float v0, float v1) {
+    public static void drawTexturedQuad(Matrix4f matrix, float x0, float x1, float y0, float y1, float z, float u0, float u1, float v0, float v1) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
@@ -210,5 +217,36 @@ public class DrawUtil {
         bufferBuilder.vertex(matrix, x1, y0, z).texture(u1, v0).next();
         bufferBuilder.vertex(matrix, x0, y0, z).texture(u0, v0).next();
         BufferRenderer.drawWithShader(bufferBuilder.end());
+    }
+
+    public void renderGuiItemModelWithCustomMatrix(MatrixStack matrixStack, ItemStack stack, int x, int y, BakedModel model) {
+        MinecraftClient client = MinecraftClient.getInstance();
+
+        client.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).setFilter(false, false);
+        RenderSystem.setShaderTexture(0, SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+        matrixStack.push();
+        matrixStack.translate(x, y, 100.0F + client.getItemRenderer().zOffset);
+        matrixStack.translate(8.0, 8.0, 0.0);
+        matrixStack.scale(1.0F, -1.0F, 1.0F);
+        matrixStack.scale(16.0F, 16.0F, 16.0F);
+
+        VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
+        boolean bl = !model.isSideLit();
+        if (bl) {
+            DiffuseLighting.disableGuiDepthLighting();
+        }
+
+        client.getItemRenderer().renderItem(stack, ModelTransformation.Mode.GUI, false, matrixStack, immediate, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, model);
+        immediate.draw();
+        RenderSystem.enableDepthTest();
+        if (bl) {
+            DiffuseLighting.enableGuiDepthLighting();
+        }
+
+        matrixStack.pop();
     }
 }
