@@ -219,7 +219,7 @@ public class DrawUtil {
         BufferRenderer.drawWithShader(bufferBuilder.end());
     }
 
-    public void renderGuiItemModelWithCustomMatrix(MatrixStack matrixStack, ItemStack stack, int x, int y, BakedModel model) {
+    public static void renderGuiItemModelWithCustomMatrix(MatrixStack matrixStack, ItemStack stack, int x, int y, BakedModel model) {
         MinecraftClient client = MinecraftClient.getInstance();
 
         client.getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).setFilter(false, false);
