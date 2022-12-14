@@ -12,7 +12,6 @@ public interface AnimatedItemGroup {
      * <p>This can draw anything you want</p>
      *
      * @param matrixStack the matrix stack used to render the screen
-     * @param creativeInventoryScreen the creative inventory screen being rendered
      * @param itemX the x-coordinate of the icon
      * @param itemY the y-coordinate of the icon
      */

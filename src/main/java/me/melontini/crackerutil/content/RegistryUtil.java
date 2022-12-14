@@ -10,6 +10,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@ApiStatus.Experimental
+//TODO add quick item group support
 public class RegistryUtil {
     public static Item createItem(Class<?> itemClass, Identifier id, Object... params) {
         return createItem(true, itemClass, id, params);
