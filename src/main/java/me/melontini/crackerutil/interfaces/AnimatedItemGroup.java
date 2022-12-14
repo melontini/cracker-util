@@ -17,5 +17,5 @@ public interface AnimatedItemGroup {
      * @param itemY the y-coordinate of the icon
      */
     @Environment(EnvType.CLIENT)
-    void animateIcon(MatrixStack matrixStack, CreativeInventoryScreen creativeInventoryScreen, int itemX, int itemY);
+    void animateIcon(MatrixStack matrixStack, int itemX, int itemY);
 }
