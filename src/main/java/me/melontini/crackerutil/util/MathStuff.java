@@ -25,7 +25,7 @@ public class MathStuff {
     }
 
     public static int round(float value) {
-        int x = (int) value; //this works since casting to long just truncates doubles
+        int x = (int) value; //this works since casting to int just truncates floats
         if (value - x >= 0.5) {
             return x + 1;
         }

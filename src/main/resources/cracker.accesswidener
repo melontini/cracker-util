@@ -4,6 +4,7 @@ transitive-accessible class net/minecraft/block/entity/BlockEntityType$BlockEnti
 
 transitive-accessible method net/minecraft/text/TextColor <init> (ILjava/lang/String;)V
 
+transitive-accessible field net/minecraft/recipe/book/RecipeBookOptions CATEGORY_OPTION_NAMES Ljava/util/Map;
 transitive-accessible field net/minecraft/world/PersistentStateManager loadedStates Ljava/util/Map;
 transitive-accessible field net/minecraft/client/gui/tooltip/OrderedTextTooltipComponent text Lnet/minecraft/text/OrderedText;
 transitive-accessible field net/minecraft/text/TextColor BY_NAME Ljava/util/Map;

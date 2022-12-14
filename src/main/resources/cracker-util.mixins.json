@@ -10,12 +10,17 @@
     "enhanced_enums.FormattingMixin",
     "enhanced_enums.RarityMixin",
     "enhanced_enums.RecipeBookCategoryMixin",
+    "kill_immutables.RecipeBookOptionsMixin",
     "kill_immutables.TextColorMixin"
   ],
   "client": [
     "animated_groups.CreativeInventoryScreenMixin",
     "enhanced_enums.RecipeBookGroupMixin",
-    "kill_immutables.RecipeBookGroupMixin"
+    "kill_immutables.RecipeBookGroupMixin",
+    "recipe_book_helper.ClientRecipeBookMixin",
+    "recipe_book_helper.RecipeBookGroupMixin",
+    "recipe_book_helper.pages.RecipeBookWidgetMixin",
+    "recipe_book_helper.pages.RecipeGroupButtonMixin"
   ],
   "injectors": {
     "defaultRequire": 1
