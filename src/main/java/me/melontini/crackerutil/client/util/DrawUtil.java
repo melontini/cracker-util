@@ -18,7 +18,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Matrix4f;
+import org.joml.Matrix4f;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +38,7 @@ public class DrawUtil {
     private DrawUtil() {
         throw new UnsupportedOperationException();
     }
+
     public static void renderTooltip(MatrixStack matrices, ItemStack stack, float x, float y) {
         renderTooltip(matrices, getTooltipFromItem(stack), stack.getTooltipData(), x, y);
     }
@@ -50,7 +51,7 @@ public class DrawUtil {
 
     public static List<Text> getTooltipFromItem(ItemStack stack) {
         var client = MinecraftClient.getInstance();
-        return stack.getTooltip(client.player, client.options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL);
+        return stack.getTooltip(client.player, client.options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.BASIC);
     }
 
     public static void renderTooltip(MatrixStack matrices, Text text, float x, float y) {
@@ -65,6 +66,7 @@ public class DrawUtil {
         renderTooltipFromComponents(matrices, lines.stream().map(TooltipComponent::of).collect(Collectors.toList()), x, y);
     }
 
+    //TODO understand what changed and if we need to change anything
     public static void renderTooltipFromComponents(MatrixStack matrices, List<TooltipComponent> components, float x, float y) {
         var itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         var textRenderer = MinecraftClient.getInstance().textRenderer;
@@ -100,7 +102,7 @@ public class DrawUtil {
             itemRenderer.zOffset = 400.0F;
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder bufferBuilder = tessellator.getBuffer();
-            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            RenderSystem.setShader(GameRenderer::getPositionColorProgram);
             bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
             Matrix4f matrix4f = matrices.peek().getPositionMatrix();
             fillGradient(matrix4f, bufferBuilder, l - 3, m - 4, l + i + 3, m - 3, 400, -267386864, -267386864);
@@ -116,7 +118,7 @@ public class DrawUtil {
             RenderSystem.disableTexture();
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
-            BufferRenderer.drawWithShader(bufferBuilder.end());
+            BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
             RenderSystem.disableBlend();
             RenderSystem.enableTexture();
             VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
@@ -163,7 +165,7 @@ public class DrawUtil {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.setShader(GameRenderer::getPositionColorProgram);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
@@ -209,14 +211,14 @@ public class DrawUtil {
     }
 
     public static void drawTexturedQuad(Matrix4f matrix, float x0, float x1, float y0, float y1, float z, float u0, float u1, float v0, float v1) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
         bufferBuilder.vertex(matrix, x0, y1, z).texture(u0, v1).next();
         bufferBuilder.vertex(matrix, x1, y1, z).texture(u1, v1).next();
         bufferBuilder.vertex(matrix, x1, y0, z).texture(u1, v0).next();
         bufferBuilder.vertex(matrix, x0, y0, z).texture(u0, v0).next();
-        BufferRenderer.drawWithShader(bufferBuilder.end());
+        BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
     }
 
     public static void renderGuiItemModelCustomMatrixNoTransform(MatrixStack matrixStack, ItemStack stack, BakedModel model) {
