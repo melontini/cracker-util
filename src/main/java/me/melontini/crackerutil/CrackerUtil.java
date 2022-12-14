@@ -7,6 +7,5 @@ public class CrackerUtil implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        CrackerLog.error("error log test {}");
     }
 }

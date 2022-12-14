@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class RegistryUtil {
-    public static @Nullable Item createItem(Class<?> itemClass, Identifier id, Object... params) {
+    public static Item createItem(Class<?> itemClass, Identifier id, Object... params) {
         return createItem(true, itemClass, id, params);
     }
 
@@ -43,7 +43,7 @@ public class RegistryUtil {
         }
     }
 
-    public static @Nullable <T extends Entity> EntityType<T> createEntityType(Identifier id, EntityType.Builder<T> builder) {
+    public static <T extends Entity> EntityType<T> createEntityType(Identifier id, EntityType.Builder<T> builder) {
         return createEntityType(true, id, builder);
     }
 
@@ -57,7 +57,7 @@ public class RegistryUtil {
         return null;
     }
 
-    public static @Nullable Block createBlock(Class<?> blockClass, Identifier id, Object... params) {
+    public static Block createBlock(Class<?> blockClass, Identifier id, Object... params) {
         return createBlock(true, blockClass, id, params);
     }
 
@@ -81,7 +81,7 @@ public class RegistryUtil {
         return null;
     }
 
-    public static @Nullable <T extends BlockEntity> BlockEntityType<T> createBlockEntity(Identifier id, BlockEntityType.Builder<T> builder) {
+    public static <T extends BlockEntity> BlockEntityType<T> createBlockEntity(Identifier id, BlockEntityType.Builder<T> builder) {
         return createBlockEntity(true, id, builder);
     }
 

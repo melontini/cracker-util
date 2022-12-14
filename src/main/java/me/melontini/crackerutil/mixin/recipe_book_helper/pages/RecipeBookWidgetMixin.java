@@ -10,9 +10,7 @@ import net.minecraft.client.gui.widget.ToggleButtonWidget;
 import net.minecraft.client.recipebook.ClientRecipeBook;
 import net.minecraft.client.recipebook.RecipeBookGroup;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.screen.AbstractRecipeScreenHandler;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -70,7 +68,7 @@ public abstract class RecipeBookWidgetMixin implements PaginatedRecipeBookWidget
         this.nextPageButton.setTextureUV(1, 208, 13, 18, TEXTURE);
         this.prevPageButton = new ToggleButtonWidget(a - 35, s, 12, 17, true);
         this.prevPageButton.setTextureUV(1, 208, 13, 18, TEXTURE);
-        page = 0;
+        this.page = 0;
     }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V", shift = At.Shift.BEFORE), method = "render")
@@ -84,8 +82,8 @@ public abstract class RecipeBookWidgetMixin implements PaginatedRecipeBookWidget
     private void renderPageText(MatrixStack matrices) {
         int x = (this.parentWidth - 135) / 2 - this.leftOffset - 30;
         int y = (this.parentHeight + 169) / 2 + 3;
-        int displayPage = page + 1;
-        int displayPages = pages + 1;
+        int displayPage = this.page + 1;
+        int displayPages = this.pages + 1;
         if (this.pages > 0) {
             String string = "" + displayPage + "/" + displayPages;
             int textLength = this.client.textRenderer.getWidth(string);
@@ -96,8 +94,8 @@ public abstract class RecipeBookWidgetMixin implements PaginatedRecipeBookWidget
     @Unique
     @Override
     public void updatePages() {
-        for (RecipeGroupButtonWidget widget : tabButtons) {
-            if (widget.getPage() == page) {
+        for (RecipeGroupButtonWidget widget : this.tabButtons) {
+            if (widget.getPage() == this.page) {
                 RecipeBookGroup recipeBookGroup = widget.getCategory();
                 if (recipeBookGroup.name().contains("_SEARCH")) {
                     widget.visible = true;
@@ -114,12 +112,12 @@ public abstract class RecipeBookWidgetMixin implements PaginatedRecipeBookWidget
     @Inject(at = @At("HEAD"), method = "mouseClicked", cancellable = true)
     private void cracker_util$mouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
         if (this.client.player != null) if (this.isOpen() && !this.client.player.isSpectator()) {
-            if (nextPageButton.mouseClicked(mouseX, mouseY, button)) {
+            if (this.nextPageButton.mouseClicked(mouseX, mouseY, button)) {
                 if (this.page <= this.pages) ++this.page;
                 updatePages();
                 updatePageSwitchButtons();
                 cir.setReturnValue(true);
-            } else if (prevPageButton.mouseClicked(mouseX, mouseY, button)) {
+            } else if (this.prevPageButton.mouseClicked(mouseX, mouseY, button)) {
                 if (this.page > 0) --this.page;
                 updatePages();
                 updatePageSwitchButtons();
@@ -161,7 +159,7 @@ public abstract class RecipeBookWidgetMixin implements PaginatedRecipeBookWidget
 
     @Override
     public int getPage() {
-        return page;
+        return this.page;
     }
 
     @Override
@@ -171,6 +169,6 @@ public abstract class RecipeBookWidgetMixin implements PaginatedRecipeBookWidget
 
     @Override
     public int getPageCount() {
-        return pages;
+        return this.pages;
     }
 }

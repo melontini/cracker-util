@@ -40,9 +40,10 @@ public class RecipeBookHelper {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     public static void addToGetGroups(RecipeBookCategory category, List<RecipeBookGroup> groups) {
-        if (RESTRICTED_CATEGORIES.contains(category)) throw new IllegalArgumentException("Tried to use addToGetGroups for vanilla groups. Use RecipeBookGroup.(YOUR_CATEGORY) instead. \nPossible method caller: " + CrackerLog.getCallerName());
-        MakeSure.notEmpty(groups, "Empty group list provided. \nPossible method caller: " + CrackerLog.getCallerName());
+        if (RESTRICTED_CATEGORIES.contains(category)) throw new IllegalArgumentException("Tried to use addToGetGroups for vanilla groups. Use RecipeBookGroup.(YOUR_CATEGORY) instead. Possible method caller: " + CrackerLog.getCallerName());
+        MakeSure.notEmpty(groups, "Empty group list provided. Possible method caller: " + CrackerLog.getCallerName());
 
         if (CATEGORY_TO_LIST.containsKey(category)) {
             CATEGORY_TO_LIST.get(category).addAll(groups);
@@ -51,10 +52,11 @@ public class RecipeBookHelper {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     public static void addToGetGroups(RecipeBookCategory category, int index, List<RecipeBookGroup> groups) {
-        if (RESTRICTED_CATEGORIES.contains(category)) throw new IllegalArgumentException("Tried to use addToGetGroups for vanilla groups. Use RecipeBookGroup.(YOUR_CATEGORY) instead. \nPossible method caller: " + CrackerLog.getCallerName());
-        MakeSure.notEmpty(groups, "Empty group list provided. \nPossible method caller: " + CrackerLog.getCallerName());
-        MakeSure.isFalse(index < 0, "Index can't be below 0! \nPossible method caller: " + CrackerLog.getCallerName());
+        if (RESTRICTED_CATEGORIES.contains(category)) throw new IllegalArgumentException("Tried to use addToGetGroups for vanilla groups. Use RecipeBookGroup.(YOUR_CATEGORY) instead. Possible method caller: " + CrackerLog.getCallerName());
+        MakeSure.notEmpty(groups, "Empty group list provided. Possible method caller: " + CrackerLog.getCallerName());
+        MakeSure.isFalse(index < 0, "Index can't be below 0! Possible method caller: " + CrackerLog.getCallerName());
 
         if (CATEGORY_TO_LIST.containsKey(category)) {
             CATEGORY_TO_LIST.get(category).addAll(index, groups);
@@ -64,7 +66,7 @@ public class RecipeBookHelper {
     }
 
     public static RecipeBookCategory createCategory(String internalName) {
-        MakeSure.notEmpty(internalName, "tried to register a RecipeBookCategory with an empty string. \nPossible method caller: " + CrackerLog.getCallerName());
+        MakeSure.notEmpty(internalName, "tried to register a RecipeBookCategory with an empty string. Possible method caller: " + CrackerLog.getCallerName());
 
         RecipeBookCategory category = (RecipeBookCategory) RecipeBookCategory.CRAFTING.extend(internalName);
         RecipeBookOptions.CATEGORY_OPTION_NAMES.put(category, new Pair<>("is" + internalName + "GuiOpen", "is" + internalName + "FilteringCraftable"));
