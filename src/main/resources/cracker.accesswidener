@@ -16,7 +16,7 @@ transitive-accessible field net/minecraft/client/gui/screen/recipebook/RecipeBoo
 transitive-accessible field net/minecraft/client/gui/screen/recipebook/RecipeBookGhostSlots time F
 transitive-accessible field net/minecraft/entity/ai/goal/TemptGoal cooldown I
 transitive-accessible field net/minecraft/entity/ai/goal/TemptGoal predicate Lnet/minecraft/entity/ai/TargetPredicate;
-transitive-accessible field net/minecraft/recipe/Ingredient$TagEntry tag Lnet/minecraft/registry/tag/TagKey;
+transitive-accessible field net/minecraft/recipe/Ingredient$TagEntry tag Lnet/minecraft/tag/TagKey;
 transitive-accessible field net/minecraft/recipe/Ingredient$StackEntry stack Lnet/minecraft/item/ItemStack;
 transitive-accessible field net/minecraft/recipe/Ingredient entries [Lnet/minecraft/recipe/Ingredient$Entry;
 transitive-accessible field net/minecraft/entity/ItemEntity STACK Lnet/minecraft/entity/data/TrackedData;
