@@ -28,13 +28,18 @@ public class RegistryUtil {
         return createItem(true, itemClass, id, Optional.empty(), params);
     }
 
-    public static Item createItem(Class<?> itemClass, Identifier id, Optional<ItemGroup> group, Object... params) {
-        return createItem(true, itemClass, id, group, params);
+    public static Item createItem(Class<?> itemClass, Identifier id, ItemGroup group, Object... params) {
+        return createItem(true, itemClass, id, Optional.of(group), params);
     }
 
     @Contract("false, _, _, _ -> null")
     public static Item createItem(boolean shouldRegister, Class<?> itemClass, Identifier id, Object... params) {
         return createItem(shouldRegister, itemClass, id, Optional.empty(), params);
+    }
+
+    @Contract("false, _, _, _, _ -> null")
+    public static Item createItem(boolean shouldRegister, Class<?> itemClass, Identifier id, ItemGroup group, Object... params) {
+        return createItem(shouldRegister, itemClass, id, Optional.of(group), params);
     }
 
     @Contract("false, _, _, _, _ -> null")
