@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.util.math.MatrixStack;
 
+@FunctionalInterface
 public interface AnimatedItemGroup {
     /**
      * Animates the icon for your item group.
