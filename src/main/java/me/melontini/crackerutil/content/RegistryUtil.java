@@ -6,6 +6,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -17,17 +18,27 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @ApiStatus.Experimental
 //TODO add quick item group support
 public class RegistryUtil {
     public static Item createItem(Class<?> itemClass, Identifier id, Object... params) {
-        return createItem(true, itemClass, id, params);
+        return createItem(true, itemClass, id, Optional.empty(), params);
+    }
+
+    public static Item createItem(Class<?> itemClass, Identifier id, Optional<ItemGroup> group, Object... params) {
+        return createItem(true, itemClass, id, group, params);
     }
 
     @Contract("false, _, _, _ -> null")
-    public static @Nullable Item createItem(boolean shouldRegister, Class<?> itemClass, Identifier id, Object... params) {
+    public static Item createItem(boolean shouldRegister, Class<?> itemClass, Identifier id, Object... params) {
+        return createItem(shouldRegister, itemClass, id, Optional.empty(), params);
+    }
+
+    @Contract("false, _, _, _, _ -> null")
+    public static @Nullable Item createItem(boolean shouldRegister, Class<?> itemClass, Identifier id, Optional<ItemGroup> group, Object... params) {
         if (shouldRegister) {
             List<Class<?>> list = new ArrayList<>();
             for (Object o : params) {
@@ -41,6 +52,7 @@ public class RegistryUtil {
             }
 
             Registry.register(Registries.ITEM, id, item);
+            group.ifPresent(itemGroup -> ItemGroupHelper.addItemGroupInjection(itemGroup, (enabledFeatures, operatorEnabled, entriesImpl) -> entriesImpl.add(item)));
             return item;
         } else {
             return null;

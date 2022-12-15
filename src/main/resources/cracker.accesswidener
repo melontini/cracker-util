@@ -1,5 +1,6 @@
 accessWidener  v2	named
 
+transitive-accessible class net/minecraft/item/ItemGroup$EntriesImpl
 transitive-accessible class net/minecraft/block/entity/BlockEntityType$BlockEntityFactory
 
 transitive-accessible method net/minecraft/text/TextColor <init> (ILjava/lang/String;)V

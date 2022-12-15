@@ -10,6 +10,7 @@
     "enhanced_enums.FormattingMixin",
     "enhanced_enums.RarityMixin",
     "enhanced_enums.RecipeBookCategoryMixin",
+    "item_group_helper.ItemGroupMixin",
     "kill_immutables.RecipeBookOptionsMixin",
     "kill_immutables.TextColorMixin"
   ],
