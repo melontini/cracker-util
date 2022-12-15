@@ -10,7 +10,9 @@ import net.minecraft.client.gui.widget.ToggleButtonWidget;
 import net.minecraft.client.recipebook.ClientRecipeBook;
 import net.minecraft.client.recipebook.RecipeBookGroup;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.screen.AbstractRecipeScreenHandler;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,6 +32,8 @@ public abstract class RecipeBookWidgetMixin implements PaginatedRecipeBookWidget
     @Shadow
     protected MinecraftClient client;
     @Shadow
+    protected AbstractRecipeScreenHandler<?> craftingScreenHandler;
+    @Shadow
     private int parentWidth;
     @Shadow
     private int parentHeight;
@@ -48,17 +52,11 @@ public abstract class RecipeBookWidgetMixin implements PaginatedRecipeBookWidget
     private ToggleButtonWidget nextPageButton;
     @Unique
     private ToggleButtonWidget prevPageButton;
+    @Shadow
+    private @Nullable RecipeGroupButtonWidget currentTab;
 
     @Shadow
     public abstract boolean isOpen();
-
-    @WrapWithCondition(at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"), method = "reset")
-    private boolean cracker_util$wrap(List<Object> list, Object o) {
-        if (o instanceof RecipeGroupButtonWidget widget) {
-            return widget.getCategory().name().contains("_SEARCH") || widget.hasKnownRecipes(this.recipeBook);
-        }
-        return true;
-    }
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/recipebook/RecipeGroupButtonWidget;setToggled(Z)V", shift = At.Shift.BEFORE), method = "reset")
     private void cracker_util$reset(CallbackInfo ci) {
@@ -140,6 +138,16 @@ public abstract class RecipeBookWidgetMixin implements PaginatedRecipeBookWidget
         int x = (this.parentWidth - 147) / 2 - this.leftOffset - 30;
         int y = (this.parentHeight - 166) / 2 + 3;
         int index = 0;
+
+        this.tabButtons.clear();
+        this.tabButtons.addAll(RecipeBookGroup.getGroups(this.craftingScreenHandler.getCategory())
+                .stream().map(RecipeGroupButtonWidget::new)
+                .filter(widget -> widget.getCategory().name().contains("_SEARCH") || widget.hasKnownRecipes(this.recipeBook))
+                .toList());
+        this.currentTab = this.currentTab == null ? this.tabButtons.get(0) : this.tabButtons.stream()
+                .filter(button -> button.getCategory().equals(this.currentTab.getCategory()))
+                .findFirst().orElse(null);
+        this.currentTab.setToggled(true);
 
         for (RecipeGroupButtonWidget widget : this.tabButtons) {
             widget.setPage(MathStuff.fastCeil(wc / 6));
