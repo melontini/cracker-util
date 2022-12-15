@@ -85,7 +85,7 @@ public class RegistryUtil {
         return null;
     }
 
-    public static @Nullable <T extends BlockEntity> BlockEntityType<T> createBlockEntity(Identifier id, BlockEntityType.Builder<T> builder) {
+    public static <T extends BlockEntity> BlockEntityType<T> createBlockEntity(Identifier id, BlockEntityType.Builder<T> builder) {
         return createBlockEntity(true, id, builder);
     }
 

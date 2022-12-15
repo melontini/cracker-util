@@ -18,6 +18,9 @@
     ],
     "main": [
       "me.melontini.crackerutil.CrackerUtil"
+    ],
+    "preLaunch": [
+      "me.melontini.crackerutil.util.CrackerPreLaunch"
     ]
   },
   "mixins": [
@@ -32,7 +35,9 @@
       "net/minecraft/class_1814": ["me/melontini/crackerutil/interfaces/ExtendableEnum"],
       "net/minecraft/class_5421": ["me/melontini/crackerutil/interfaces/ExtendableEnum"],
       "net/minecraft/class_314": ["me/melontini/crackerutil/interfaces/ExtendableEnum"],
-      "net/minecraft/class_124": ["me/melontini/crackerutil/interfaces/ExtendableEnum"]
+      "net/minecraft/class_124": ["me/melontini/crackerutil/interfaces/ExtendableEnum"],
+      "net/minecraft/class_507": ["me/melontini/crackerutil/interfaces/PaginatedRecipeBookWidget"],
+      "net/minecraft/class_512": ["me/melontini/crackerutil/interfaces/PaginatedRecipeGroupButtonWidget"]
     }
   }
 }

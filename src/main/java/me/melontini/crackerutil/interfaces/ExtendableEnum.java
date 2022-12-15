@@ -12,7 +12,7 @@ public interface ExtendableEnum<T> {
      * <p>All inner enums need to be cast to this interface, since interface injection doesn't seem to apply to them.</p>
      *
      * @param internalName The internal name of the new enum element. This name is used by the {@link java.lang.Enum#valueOf(Class, String)} method to map from a string representation of the enum to its corresponding enum constant.
-     * Note that some enums may provide their own names (e.g {@link net.minecraft.util.Formatting}), which are different from the internal names.
+     * Note that some enums may provide their own names (e.g {@link net.minecraft.util.Formatting}), which are different from the internal names. Should be uppercase with no special symbols.
      * @param params the parameters to pass to the constructor of the new enum element
      * @return the newly created enum element
      * @throws IllegalStateException if the `extend` method is not implemented by the enum class
