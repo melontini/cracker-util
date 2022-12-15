@@ -1,6 +1,5 @@
 package me.melontini.crackerutil.mixin.recipe_book_helper.pages;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import me.melontini.crackerutil.interfaces.PaginatedRecipeBookWidget;
 import me.melontini.crackerutil.util.MathStuff;
 import net.minecraft.client.MinecraftClient;
@@ -71,13 +70,13 @@ public abstract class RecipeBookWidgetMixin implements PaginatedRecipeBookWidget
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V", shift = At.Shift.BEFORE), method = "render")
     private void cracker_util$render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        renderPageText(matrices);
+        cracker_util$renderPageText(matrices);
         this.prevPageButton.render(matrices, mouseX, mouseY, delta);
         this.nextPageButton.render(matrices, mouseX, mouseY, delta);
     }
 
     @Unique
-    private void renderPageText(MatrixStack matrices) {
+    private void cracker_util$renderPageText(MatrixStack matrices) {
         int x = (this.parentWidth - 135) / 2 - this.leftOffset - 30;
         int y = (this.parentHeight + 169) / 2 + 3;
         int displayPage = this.page + 1;
@@ -165,16 +164,19 @@ public abstract class RecipeBookWidgetMixin implements PaginatedRecipeBookWidget
         ci.cancel();
     }
 
+    @Unique
     @Override
     public int getPage() {
         return this.page;
     }
 
+    @Unique
     @Override
     public void setPage(int page) {
         this.page = page;
     }
 
+    @Unique
     @Override
     public int getPageCount() {
         return this.pages;
