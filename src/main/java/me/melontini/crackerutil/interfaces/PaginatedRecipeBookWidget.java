@@ -1,7 +1,9 @@
 package me.melontini.crackerutil.interfaces;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.ApiStatus;
-
+@Environment(EnvType.CLIENT)
 @ApiStatus.Experimental
 public interface PaginatedRecipeBookWidget {
     default void updatePages() {

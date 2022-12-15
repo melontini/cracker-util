@@ -2,12 +2,13 @@ package me.melontini.crackerutil.content;
 
 import net.minecraft.item.ItemGroup;
 import net.minecraft.resource.featuretoggle.FeatureSet;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
+@ApiStatus.Experimental
 public class ItemGroupHelper {
     public static final Map<ItemGroup, List<InjectEntries>> INJECTED_GROUPS = new ConcurrentHashMap<>();
 

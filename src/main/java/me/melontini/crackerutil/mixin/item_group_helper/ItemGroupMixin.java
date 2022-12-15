@@ -3,6 +3,8 @@ package me.melontini.crackerutil.mixin.item_group_helper;
 import me.melontini.crackerutil.content.ItemGroupHelper;
 import me.melontini.crackerutil.interfaces.AnimatedItemGroup;
 import me.melontini.crackerutil.interfaces.ItemGroupExtensions;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,17 +27,20 @@ public class ItemGroupMixin implements ItemGroupExtensions {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     @Override
     public boolean shouldAnimateIcon() {
         return cracker_util$animation != null;
     }
 
+    @Environment(EnvType.CLIENT)
     @Override
     public ItemGroup setIconAnimation(AnimatedItemGroup animation) {
         this.cracker_util$animation = animation;
         return (ItemGroup) (Object) this;
     }
 
+    @Environment(EnvType.CLIENT)
     @Override
     public AnimatedItemGroup getIconAnimation() {
         return this.cracker_util$animation;
